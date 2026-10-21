@@ -1,179 +1,97 @@
-🛡️ CyberLab SOC Platform
-A Cybersecurity Monitoring & Threat Detection Lab
+# CyberLab SOC Platform
 
-<p align="center">
-<img src="https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge" alt="Project Status">
-<img src="https://img.shields.io/badge/Python-3.12+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-<img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-<img src="https://img.shields.io/badge/React-TypeScript-3178C6?style=for-the-badge&logo=react&logoColor=white" alt="React">
-<img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-</p>
+Интерактивная учебная лаборатория для мониторинга событий безопасности, разбора журналов, первичной сортировки сигналов и расследования инцидентов.
 
-🎯 Overview
+Интерфейс работает в браузере без сборки, серверной части и внешних сервисов. Демонстрационные инциденты синтетические. Файлы журналов анализируются локально и не загружаются в сеть.
 
-CyberLab SOC Platform is a hands-on cybersecurity project designed to demonstrate security monitoring, log analysis, threat detection, and incident response workflows.
+## Возможности
 
-The platform aims to help security analysts investigate suspicious activity, identify potential threats, and understand how security events can be mapped to the MITRE ATT&CK framework.
+- Панель SOC с показателями, графиком телеметрии и свежими сигналами.
+- Очередь инцидентов с поиском, фильтрами по критичности и статусу.
+- Карточка расследования с описанием, временной шкалой, рекомендацией аналитика и классификацией MITRE ATT&CK.
+- Создание учебных расследований и смена статусов с локальным сохранением в браузере.
+- Анализ JSON, CSV, LOG и TXT: нормализация полей и демонстрационные правила для серии неудачных входов, подозрительных параметров PowerShell и изменения привилегий.
+- Журнал событий, реестр активов и учебная матрица MITRE ATT&CK.
+- Экспорт очереди инцидентов в CSV, включая корректную обработку кириллицы.
+- Адаптивная вёрстка, доступное управление с клавиатуры и настройки интерфейса.
 
-Built as a practical portfolio project for aspiring SOC Analysts, Blue Team Engineers, and Cybersecurity Professionals.
+## Запуск
 
-Learn by investigating. Detect by understanding. Defend by design.
-✨ Features
-🔎 Log Analysis — Import and analyze JSON, CSV, and text-based security logs.
-🚨 Threat Detection — Identify suspicious authentication patterns and potential brute-force activity.
-📊 Security Dashboard — Visualize alerts, severity levels, and event trends.
-🗂️ Incident Management — Track investigations, update statuses, and document findings.
-🧠 MITRE ATT&CK Mapping — Connect relevant detection rules to documented adversary techniques.
-🧪 Event Simulator — Generate synthetic security events for safe testing and demonstrations.
-📡 REST API — Access analysis and incident data through a documented API.
-🐳 Docker Support — Prepare a reproducible development and deployment environment.
-✅ Automated Testing — Validate detection logic and core application behavior.
+Можно открыть `index.html` в браузере напрямую. Для локального HTTP-сервера из каталога проекта выполните:
 
-Features are planned or in development until implemented and verified.
+```bash
+python -m http.server 8000
+```
 
-🏗️ Architecture
-             ┌──────────────────────┐
-             │   Security Analyst   │
-             └──────────┬───────────┘
-                        │
-                        ▼
-             ┌──────────────────────┐
-             │   React Dashboard    │
-             └──────────┬───────────┘
-                        │ REST API
-                        ▼
-             ┌──────────────────────┐
-             │    FastAPI Backend   │
-             └──────────┬───────────┘
-                        │
-             ┌──────────┴───────────┐
-             ▼          ▼           ▼
-        ┌────────┐ ┌──────────┐ ┌──────────┐
-        │  Log   │ │  Threat  │ │ Incident │
-        │Parser  │ │ Detection│ │Management│
-        └───┬────┘ └────┬─────┘ └────┬─────┘
-            └────────────┼────────────┘
-                         ▼
-                 ┌──────────────┐
-                 │   Database   │
-                 └──────────────┘
+Затем откройте <http://127.0.0.1:8000>.
 
-🧰 Tech Stack
-Technology	Purpose
-Python	Detection logic and data processing
-FastAPI	Backend and REST API
-React	Interactive user interface
-TypeScript	Frontend type safety
-SQLite	Local data storage
-Docker	Reproducible environments
-Pytest	Automated testing
-Git & GitHub	Version control and collaboration
-🚀 Getting Started
+Вкладка «Анализ журналов» содержит кнопку «Загрузить пример». Она вставляет безопасный синтетический набор событий, на котором видны срабатывания демонстрационных правил.
 
-The following setup describes the intended development environment. Commands may need adjustment until the application and dependency files are implemented.
+## Формат журналов
 
-Prerequisites
-Python 3.12+
-Node.js LTS and npm
-Git
-Docker Desktop (optional)
-1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/cyberlab-soc-platform.git
-cd cyberlab-soc-platform
+Поддерживаются JSON-объект, массив объектов, JSON Lines, CSV и обычный текст. При распознавании полей учитываются распространённые варианты имён:
 
+| Поле интерфейса | Примеры имён в журнале |
+| --- | --- |
+| Время | `timestamp`, `time`, `@timestamp`, `datetime`, `date` |
+| Событие | `event`, `event_type`, `action`, `type`, `message` |
+| Пользователь | `user`, `username`, `account`, `principal` |
+| Источник | `source_ip`, `src_ip`, `ip`, `client_ip` |
+| Узел | `host`, `hostname`, `computer`, `device` |
+| Результат | `result`, `status`, `outcome` |
 
-Replace YOUR_USERNAME with your GitHub username.
+Пример JSON:
 
-2. Start the backend
+```json
+[
+  {
+    "timestamp": "2025-04-18T09:41:52Z",
+    "event": "login_failed",
+    "source_ip": "10.24.8.19",
+    "user": "svc_backup",
+    "host": "SRV-AD-01",
+    "result": "failure"
+  }
+]
+```
 
-After the backend requirements and application entry point have been created:
+Для демонстрационного сигнала подбора учётных данных нужно не менее пяти событий отказа от одного источника. Правила иллюстрируют логику разбора; они не заменяют SIEM, EDR или проверенные правила обнаружения.
 
-cd backend
-python -m venv .venv
+## Структура проекта
 
+```text
+.
+├── favicon.svg  # знак проекта
+├── index.html   # разметка приложения
+├── styles.css   # тема и адаптивные стили
+├── app.js       # интерфейс, демонстрационные данные и правила анализа
+├── scripts/
+│   └── smoke_check.py  # структурная проверка без сторонних библиотек
+└── README.md    # документация
+```
 
-Activate the environment on Windows PowerShell:
+## Безопасность и ограничения
 
-.\.venv\Scripts\Activate.ps1
+- Используйте только синтетические журналы или данные, на анализ которых у вас есть разрешение.
+- Не загружайте секреты, пароли, токены и персональные данные.
+- Размер одного импортируемого файла ограничен 2 МБ, объём анализа — 5 000 записей.
+- Импортированные данные обрабатываются в браузере и не сохраняются приложением.
+- Статусы новых и изменённых инцидентов сохраняются в `localStorage` текущего браузера.
+- Сетевые сенсоры, SIEM, EDR, сервер API и внешние интеграции не подключены. Все показатели и активы в панели учебные.
+- Сопоставление с MITRE ATT&CK предназначено для обучения; выводы следует проверять по первичным событиям.
 
+## Проверка
 
-Install dependencies when requirements.txt is available:
+Проверки выполняются без установки сторонних зависимостей:
 
-pip install -r requirements.txt
+```bash
+node --check app.js
+python scripts/smoke_check.py
+```
 
+После запуска приложения проверьте загрузку примера в анализаторе, фильтрацию очереди, открытие карточки и изменение статуса, создание расследования и экспорт CSV.
 
-Start the API when main.py is implemented:
+## Лицензия
 
-uvicorn main:app --reload
+См. файл [LICENSE](LICENSE).
 
-
-API documentation should be available at:
-
-http://127.0.0.1:8000/docs
-
-3. Start the frontend
-
-After the React application has been created:
-
-cd frontend
-npm install
-npm run dev
-
-
-Use the local URL printed by the development server.
-
-🔬 Example Investigation
-
-A planned demonstration scenario:
-
-Import synthetic authentication logs.
-Detect repeated failed login attempts from a fictional source IP.
-Review the generated alert and its severity.
-Investigate related events and timestamps.
-Document findings and mark the incident as resolved or a false positive.
-Export an incident report.
-
-This workflow demonstrates how raw log events can support a structured security investigation.
-
-🧠 Cybersecurity Concepts
-
-The project is intended to demonstrate practical understanding of:
-
-Security Operations Center (SOC) workflows
-Blue Team monitoring and alert triage
-Log parsing and event normalization
-Detection engineering fundamentals
-Authentication attack indicators
-Incident investigation and documentation
-MITRE ATT&CK technique mapping
-Secure API design
-Automated testing and reproducible deployments
-🗺️ Roadmap
-Implement the FastAPI backend
-Add JSON and CSV log ingestion
-Develop configurable detection rules
-Build the security dashboard
-Implement incident tracking
-Add MITRE ATT&CK references
-Create synthetic event datasets
-Write automated tests
-Add Docker Compose configuration
-Publish setup and investigation guides
-Add screenshots and a demonstration video
-🔐 Security & Responsible Use
-
-CyberLab is intended for defensive security education and authorized testing.
-
-Use synthetic or properly authorized security logs.
-Never commit API keys, passwords, access tokens, or private data.
-Validate imported files and treat their contents as untrusted input.
-Do not use the project to access systems without permission.
-Verify detection results before treating an alert as a confirmed incident.
-🤝 Contributing
-
-Contributions, bug reports, detection-rule improvements, and documentation updates are welcome.
-
-Fork the repository.
-Create a feature branch.
-Make and test your changes.
-Submit a pull request describing the improvement.
