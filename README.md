@@ -177,17 +177,3 @@ Fork the repository.
 Create a feature branch.
 Make and test your changes.
 Submit a pull request describing the improvement.
-👨‍💻 Author
-
-Your Name — Aspiring Cybersecurity Professional
-
-Interested in SOC operations, Blue Team defense, threat detection, and security automation.
-
-GitHub: @YOUR_USERNAME
-📄 License
-
-This project is intended to be released under the MIT License once a LICENSE file has been added to the repository.
-
-<p align="center">
-<b>Built for learning. Designed for defense. Driven by curiosity. 🛡️</b>
-</p>
