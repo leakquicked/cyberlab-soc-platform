@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="420" viewBox="0 0 1440 420" role="img" aria-labelledby="title desc">
+  <title id="title">CyberLab SOC Platform</title>
+  <desc id="desc">Тёмная аналитическая панель с неоновыми линиями и сеткой</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10191c"/>
+      <stop offset=".55" stop-color="#080b0d"/>
+      <stop offset="1" stop-color="#101519"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#38e6d3" stop-opacity="0"/>
+      <stop offset=".52" stop-color="#38e6d3" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#b7ff3c" stop-opacity=".05"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#a7b8b4" stroke-opacity=".08" stroke-width="1"/>
+    </pattern>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1440" height="420" rx="22" fill="url(#bg)"/>
+  <rect width="1440" height="420" rx="22" fill="url(#grid)"/>
+  <path d="M0 310H260l34-34 36 64 43-108 43 78h119l35-30 39 44 38-91 41 77h180l42-42 36 49 41-104 38 70h130l32-28h205" fill="none" stroke="url(#line)" stroke-width="2" filter="url(#glow)" opacity=".86"/>
+  <path d="M0 338H1440M0 350H1440" stroke="#38e6d3" stroke-opacity=".08"/>
+  <circle cx="1050" cy="142" r="92" fill="none" stroke="#38e6d3" stroke-opacity=".16"/>
+  <circle cx="1050" cy="142" r="68" fill="none" stroke="#b7ff3c" stroke-opacity=".34"/>
+  <circle cx="1050" cy="142" r="6" fill="#b7ff3c" filter="url(#glow)"/>
+  <path d="M1050 40v40m0 124v40m102-102h-40m-124 0h-40m174-72-28 28m-88 88-28 28m144 0-28-28m-88-88-28-28" stroke="#38e6d3" stroke-opacity=".42"/>
+  <rect x="78" y="76" width="34" height="34" rx="9" fill="#b7ff3c"/>
+  <path d="M94 84v18m-9-9h18" stroke="#080b0d" stroke-width="2"/>
+  <text x="128" y="101" fill="#aebbc0" font-family="Inter,Segoe UI,sans-serif" font-size="14" letter-spacing="3">SECURITY OPERATIONS LAB</text>
+  <text x="76" y="190" fill="#e7ecef" font-family="Inter,Segoe UI,sans-serif" font-size="58" font-weight="700">CyberLab SOC</text>
+  <text x="78" y="238" fill="#b7ff3c" font-family="Inter,Segoe UI,sans-serif" font-size="20" letter-spacing="2">АНАЛИЗ. ОБНАРУЖЕНИЕ. РАССЛЕДОВАНИЕ.</text>
+  <text x="80" y="278" fill="#87939b" font-family="Inter,Segoe UI,sans-serif" font-size="16">Интерактивная лаборатория кибербезопасности</text>
+  <g font-family="ui-monospace,Consolas,monospace" font-size="11" fill="#38e6d3" opacity=".56">
+    <text x="1190" y="85">EVENT STREAM / ACTIVE</text>
+    <text x="1190" y="104">RULESET 03.7.12</text>
+    <text x="1190" y="123">ATT&amp;CK MAPPING</text>
+  </g>
+  <rect x="1188" y="139" width="170" height="2" fill="#38e6d3" opacity=".2"/>
+  <rect x="1188" y="139" width="112" height="2" fill="#b7ff3c"/>
+</svg>
