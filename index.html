@@ -1,1 +1,129 @@
-<!doctype html><html lang="ru"><meta charset="utf-8"><title>CyberLab SOC Platform</title><h1>CyberLab SOC Platform</h1></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b0d">
+  <meta name="description" content="CyberLab SOC Platform — учебная среда для анализа журналов, обнаружения угроз и расследования инцидентов.">
+  <title>CyberLab SOC Platform — Центр операций безопасности</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Основная навигация">
+      <a class="brand" href="#overview" aria-label="CyberLab SOC Platform — обзор">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5 27 8v7.2c0 6.5-4.6 11.1-11 13.3C9.6 26.3 5 21.7 5 15.2V8l11-4.5Z" stroke="currentColor" stroke-width="1.5"/><path d="m11.2 16.1 3.1 3.1 6.8-7.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand-copy"><strong>CYBERLAB <span>SOC</span></strong><small>ЛАБОРАТОРИЯ · 01</small></span>
+      </a>
+
+      <div class="nav-section">
+        <p class="nav-label">Рабочее пространство</p>
+        <nav class="nav-list">
+          <button class="nav-item active" data-route="overview"><span class="nav-icon" data-icon="grid"></span><span>Обзор SOC</span></button>
+          <button class="nav-item" data-route="incidents"><span class="nav-icon" data-icon="alert"></span><span>Инциденты</span><span class="nav-count" id="navIncidentCount">03</span></button>
+          <button class="nav-item" data-route="analysis"><span class="nav-icon" data-icon="scan"></span><span>Анализ журналов</span></button>
+          <button class="nav-item" data-route="events"><span class="nav-icon" data-icon="list"></span><span>Журнал событий</span></button>
+          <button class="nav-item" data-route="mitre"><span class="nav-icon" data-icon="target"></span><span>MITRE ATT&amp;CK</span></button>
+        </nav>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label">Инфраструктура</p>
+        <nav class="nav-list">
+          <button class="nav-item" data-route="assets"><span class="nav-icon" data-icon="server"></span><span>Активы</span></button>
+          <button class="nav-item" data-route="settings"><span class="nav-icon" data-icon="settings"></span><span>Настройки</span></button>
+        </nav>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="environment-card">
+          <div class="environment-title"><span class="online-dot"></span><strong>Изолированная лаборатория</strong></div>
+          <p>Учебные данные. Внешние системы не подключены.</p>
+          <div class="sensor-line"><span>Сенсоры</span><span>142 / 142</span></div>
+          <div class="sensor-track"><i></i></div>
+        </div>
+        <div class="sidebar-foot"><span class="status-pulse"></span>Все контуры работают<span class="mono">v1.0.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="menuButton" aria-label="Открыть навигацию"><span data-icon="menu"></span></button>
+          <div class="breadcrumbs"><span>Рабочее пространство</span><i>/</i><strong id="breadcrumbCurrent">Обзор SOC</strong></div>
+        </div>
+        <div class="topbar-right">
+          <div class="system-time"><span class="online-dot"></span><span>СИСТЕМА В СЕТИ</span><time id="clock">--:--:-- UTC+5</time></div>
+          <span class="topbar-divider"></span>
+          <button class="icon-button notification-button" id="notificationButton" aria-label="Уведомления"><span data-icon="bell"></span><i></i></button>
+          <div class="user-profile"><span class="user-avatar">АК</span><span class="user-copy"><strong>Аналитик SOC</strong><small>Уровень 1 · Смена активна</small></span><span class="chevron" data-icon="chevron"></span></div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <div class="page-heading">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span><span id="pageEyebrow">ПАНЕЛЬ МОНИТОРИНГА · СРЕДА 01</span></div><h1 id="pageTitle">Центр операций безопасности</h1><p id="pageDescription">Сводка телеметрии, инцидентов и состояния защитных контуров.</p></div>
+          <div class="heading-actions" id="headingActions"><button class="button button-secondary" id="exportReportButton"><span data-icon="download"></span>Экспорт отчёта</button><button class="button button-secondary" id="refreshButton"><span data-icon="refresh"></span>Обновить данные</button><button class="button button-primary" id="newCaseButton"><span data-icon="plus"></span>Создать расследование</button></div>
+        </div>
+
+        <section class="route-view active" data-view="overview" aria-label="Обзор SOC">
+          <div class="metric-grid" id="metricGrid"></div>
+          <div class="dashboard-grid">
+            <section class="panel traffic-panel">
+              <div class="panel-heading"><div><h2>Поток событий</h2><p>Телеметрия и выявленные аномалии</p></div><label class="select-wrap"><span class="sr-only">Период графика</span><select id="chartPeriod"><option value="24">Последние 24 часа</option><option value="7">Последние 7 дней</option><option value="30">Последние 30 дней</option></select><span data-icon="chevron"></span></label></div>
+              <div class="chart-summary"><div><strong id="chartTotal">24 891</strong><span>СОБЫТИЙ ЗА ПЕРИОД</span></div><div class="chart-change"><span data-icon="trend"></span><strong>+8,4%</strong><small>к предыдущему периоду</small></div></div>
+              <div class="chart-container"><svg class="traffic-chart" id="trafficChart" viewBox="0 0 760 220" preserveAspectRatio="none" role="img" aria-label="График потока событий за последние 24 часа"></svg></div>
+              <div class="chart-legend"><span><i class="legend-swatch lime"></i>Все события</span><span><i class="legend-swatch teal"></i>Подозрительная активность</span><span class="chart-updated">Обновлено только что</span></div>
+            </section>
+            <section class="panel signal-panel">
+              <div class="panel-heading"><div><h2>Сигналы аналитики</h2><p>Требуют проверки оператором</p></div><span class="live-label"><i></i>3 НОВЫХ</span></div>
+              <div class="signal-list" id="signalList"></div>
+              <button class="panel-link" data-route-link="incidents">Все сигналы <span data-icon="arrow"></span></button>
+            </section>
+          </div>
+          <section class="panel incidents-panel">
+            <div class="panel-heading panel-heading-table"><div><h2>Последние инциденты</h2><p>Очередь расследований по степени риска</p></div><button class="panel-link" data-route-link="incidents">Открыть очередь <span data-icon="arrow"></span></button></div>
+            <div class="table-tools"><label class="search-wrap"><span data-icon="search"></span><input id="overviewSearch" type="search" placeholder="Поиск по инцидентам" autocomplete="off"></label><label class="select-wrap"><span class="sr-only">Фильтр критичности</span><select id="overviewSeverity"><option value="">Все уровни</option><option>Критический</option><option>Высокий</option><option>Средний</option></select><span data-icon="chevron"></span></label></div>
+            <div class="table-scroll"><table><thead><tr><th>Идентификатор</th><th>Инцидент</th><th>Критичность</th><th>Узел</th><th>Обнаружен</th><th>Статус</th><th><span class="sr-only">Действие</span></th></tr></thead><tbody id="overviewIncidentRows"></tbody></table></div>
+            <div class="table-footer"><span id="overviewRowCount">—</span><span class="mono">ПОСЛЕДНИЕ 24 ЧАСА</span></div>
+          </section>
+          <div class="bottom-grid">
+            <section class="panel mitre-panel"><div class="panel-heading"><div><h2>Покрытие MITRE ATT&amp;CK</h2><p>Техники, связанные с активными расследованиями</p></div><button class="panel-link" data-route-link="mitre">Матрица <span data-icon="arrow"></span></button></div><div class="mitre-body"><div class="mitre-stat"><strong>06</strong><span>ТЕХНИК В ОБЛАСТИ НАБЛЮДЕНИЯ</span></div><div class="technique-strip" id="techniqueStrip"></div><div class="mitre-caption"><span><i class="legend-swatch red"></i>Есть события</span><span><i class="legend-swatch muted"></i>Нет событий</span></div></div></section>
+            <section class="panel asset-panel"><div class="panel-heading"><div><h2>Активы с высоким риском</h2><p>Узлы, затронутые сигналами аналитики</p></div><button class="panel-link" data-route-link="assets">Все активы <span data-icon="arrow"></span></button></div><div id="riskAssets" class="risk-assets"></div></section>
+          </div>
+        </section>
+
+        <section class="route-view" data-view="incidents" aria-label="Инциденты">
+          <div class="route-intro"><div><h2>Очередь расследований</h2><p>Проверяйте сигналы, назначайте статус и изучайте связанные события.</p></div><div class="queue-summary" id="queueSummary"></div></div>
+          <section class="panel full-table-panel"><div class="table-toolbar"><label class="search-wrap"><span data-icon="search"></span><input id="incidentSearch" type="search" placeholder="Поиск по ID, описанию, узлу или источнику"></label><div class="filter-group"><label class="select-wrap"><span class="sr-only">Критичность</span><select id="incidentSeverity"><option value="">Все уровни</option><option>Критический</option><option>Высокий</option><option>Средний</option></select><span data-icon="chevron"></span></label><label class="select-wrap"><span class="sr-only">Статус</span><select id="incidentStatus"><option value="">Все статусы</option><option>Новый</option><option>Расследуется</option><option>Назначен</option><option>Закрыт</option></select><span data-icon="chevron"></span></label></div></div><div class="table-scroll"><table><thead><tr><th>Идентификатор</th><th>Инцидент</th><th>Критичность</th><th>Узел</th><th>Источник</th><th>Обнаружен</th><th>Статус</th><th><span class="sr-only">Действие</span></th></tr></thead><tbody id="incidentRows"></tbody></table></div><div class="table-footer"><span id="incidentRowCount">—</span><span class="mono">УЧЕБНЫЕ ДАННЫЕ</span></div></section>
+        </section>
+
+        <section class="route-view" data-view="analysis" aria-label="Анализ журналов">
+          <div class="route-intro"><div><h2>Лаборатория анализа журналов</h2><p>Загрузите JSON или CSV, чтобы нормализовать записи и проверить базовые правила обнаружения.</p></div><span class="demo-chip"><i class="online-dot"></i>ОБРАБОТКА В БРАУЗЕРЕ</span></div>
+          <div class="analysis-grid"><section class="panel ingest-panel"><div class="panel-heading"><div><h2>Источник данных</h2><p>Данные остаются в этой вкладке и не отправляются на сервер</p></div><span class="mono muted">JSON · CSV · LOG</span></div><label class="drop-zone" id="dropZone" for="logFile"><span class="drop-icon" data-icon="upload"></span><strong>Перетащите файл сюда</strong><small>или выберите файл на устройстве · до 2 МБ</small><span class="button button-secondary">Выбрать файл</span><input id="logFile" type="file" accept=".json,.csv,.log,.txt,application/json,text/csv,text/plain" hidden></label><div class="or-divider"><span>ИЛИ ВСТАВЬТЕ ЗАПИСИ</span></div><textarea id="logInput" class="log-input" spellcheck="false" aria-label="Содержимое журнала" placeholder='{"timestamp":"2025-04-18T09:42:18Z","event":"login_failed","source_ip":"10.24.8.19","user":"svc_backup","host":"SRV-AD-01"}'></textarea><div class="ingest-actions"><button class="button button-secondary" id="sampleLogsButton">Загрузить пример</button><button class="button button-primary" id="analyzeButton"><span data-icon="scan"></span>Анализировать журнал</button></div><p class="privacy-note"><span data-icon="lock"></span>Анализ выполняется локально. Загружаемые файлы не сохраняются.</p></section><section class="panel rules-panel"><div class="panel-heading"><div><h2>Правила обнаружения</h2><p>Учебные эвристики для демонстрации потока анализа</p></div><span class="rule-count">03 АКТИВНЫ</span></div><div class="rule-list"><article class="rule-item"><span class="rule-icon red-rule" data-icon="alert"></span><div><strong>Перебор учётных данных</strong><p>5 и более неудачных входов с одного IP</p><span class="mono">AUTH-BRUTE-01</span></div><i class="rule-enabled"></i></article><article class="rule-item"><span class="rule-icon amber-rule" data-icon="terminal"></span><div><strong>Подозрительный PowerShell</strong><p>Скрытый или закодированный запуск</p><span class="mono">PROC-PS-02</span></div><i class="rule-enabled"></i></article><article class="rule-item"><span class="rule-icon teal-rule" data-icon="key"></span><div><strong>Изменение привилегий</strong><p>Добавление в административную группу</p><span class="mono">IDENTITY-PRIV-03</span></div><i class="rule-enabled"></i></article></div><div class="rule-disclaimer">Правила демонстрационные и не заменяют промышленную систему обнаружения.</div></section></div>
+          <section class="panel analysis-results" id="analysisResults" hidden><div class="panel-heading"><div><h2>Результаты анализа</h2><p id="analysisSummary">—</p></div><button class="button button-secondary" id="clearAnalysisButton">Очистить</button></div><div class="findings-grid" id="findingsGrid"></div><div class="table-scroll"><table><thead><tr><th>Время</th><th>Событие</th><th>Пользователь</th><th>Источник</th><th>Узел</th><th>Оценка</th></tr></thead><tbody id="logRows"></tbody></table></div></section>
+        </section>
+
+        <section class="route-view" data-view="events" aria-label="Журнал событий"><div class="route-intro"><div><h2>Журнал событий</h2><p>Нормализованная телеметрия учебной среды за текущую смену.</p></div><span class="demo-chip"><i class="online-dot"></i>ПРИЁМ ДАННЫХ АКТИВЕН</span></div><section class="panel full-table-panel"><div class="table-toolbar"><label class="search-wrap"><span data-icon="search"></span><input id="eventSearch" type="search" placeholder="Поиск по событию, узлу или адресу"></label><label class="select-wrap"><span class="sr-only">Тип события</span><select id="eventTypeFilter"><option value="">Все события</option><option value="auth">Аутентификация</option><option value="process">Процессы</option><option value="network">Сеть</option><option value="identity">Идентификация</option></select><span data-icon="chevron"></span></label></div><div class="table-scroll"><table><thead><tr><th>Время</th><th>Тип</th><th>Событие</th><th>Пользователь</th><th>Узел</th><th>Источник</th><th>Результат</th></tr></thead><tbody id="eventRows"></tbody></table></div><div class="table-footer"><span id="eventRowCount">—</span><span class="mono">ИСТОЧНИК: УЧЕБНЫЙ СТЕНД</span></div></section></section>
+
+        <section class="route-view" data-view="mitre" aria-label="MITRE ATT&CK"><div class="route-intro"><div><h2>Матрица MITRE ATT&amp;CK</h2><p>Тактики и техники, сопоставленные с сигналами лабораторной среды.</p></div><span class="demo-chip">СТРУКТУРА ATT&amp;CK · ENTERPRISE</span></div><div class="mitre-matrix" id="mitreMatrix"></div><div class="panel mitre-note-panel"><span class="note-mark" data-icon="info"></span><p>Идентификаторы и названия техник приведены для обучения. Сопоставление в этой лаборатории носит иллюстративный характер и не является подтверждением активности реального противника.</p></div></section>
+
+        <section class="route-view" data-view="assets" aria-label="Активы"><div class="route-intro"><div><h2>Инвентаризация активов</h2><p>Состояние сенсоров и риск узлов в изолированном учебном контуре.</p></div><span class="demo-chip"><i class="online-dot"></i>142 УЗЛА НА СВЯЗИ</span></div><div class="asset-summary-grid" id="assetSummaryGrid"></div><section class="panel full-table-panel"><div class="panel-heading"><div><h2>Реестр активов</h2><p>Учебные имена узлов и зарезервированные адреса</p></div><label class="search-wrap"><span data-icon="search"></span><input id="assetSearch" type="search" placeholder="Поиск по активам"></label></div><div class="table-scroll"><table><thead><tr><th>Актив</th><th>Тип</th><th>Адрес</th><th>Важность</th><th>Риск</th><th>Состояние сенсора</th></tr></thead><tbody id="assetRows"></tbody></table></div></section></section>
+
+        <section class="route-view" data-view="settings" aria-label="Настройки"><div class="route-intro"><div><h2>Настройки лаборатории</h2><p>Локальные параметры отображения и учебной среды.</p></div></div><div class="settings-grid"><section class="panel settings-panel"><div class="panel-heading"><div><h2>Параметры интерфейса</h2><p>Настройки сохраняются в браузере на этом устройстве.</p></div></div><label class="setting-row"><span><strong>Компактные таблицы</strong><small>Уменьшить высоту строк в очереди событий</small></span><input type="checkbox" id="compactToggle" class="toggle"><i></i></label><label class="setting-row"><span><strong>Подсказки аналитика</strong><small>Показывать рекомендации в карточках инцидентов</small></span><input type="checkbox" id="recommendationToggle" class="toggle"><i></i></label><div class="settings-divider"></div><div class="setting-row setting-static"><span><strong>Режим среды</strong><small>Все действия ограничены локальной демонстрацией</small></span><span class="setting-value"><i class="online-dot"></i>Изолированный</span></div><div class="settings-divider"></div><div class="about-block"><span class="brand-mark small-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5 27 8v7.2c0 6.5-4.6 11.1-11 13.3C9.6 26.3 5 21.7 5 15.2V8l11-4.5Z" stroke="currentColor" stroke-width="1.5"/><path d="m11.2 16.1 3.1 3.1 6.8-7.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>CyberLab SOC Platform</strong><small>Версия 1.0.0 · Портфолио-лаборатория</small></div></div></section><section class="panel safety-panel"><div class="panel-heading"><div><h2>Безопасная работа с данными</h2><p>Ограничения учебной платформы</p></div><span data-icon="shield"></span></div><ul><li>Используйте только синтетические или разрешённые журналы.</li><li>Не загружайте секреты, персональные данные и реальные учётные данные.</li><li>Проверяйте вывод аналитика вручную перед принятием решений.</li><li>Интерфейс не связан с реальными SIEM, EDR или системами управления доступом.</li></ul></section></div></section>
+
+        <footer class="page-footer"><span>CYBERLAB SOC PLATFORM <i>·</i> УЧЕБНАЯ СРЕДА</span><span>ДЕМО ДАННЫЕ <i>·</i> 2025.04</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="overlay" id="overlay"></div>
+  <aside class="detail-drawer" id="detailDrawer" aria-label="Карточка инцидента" aria-hidden="true"><div class="drawer-head"><span class="eyebrow">КАРТОЧКА ИНЦИДЕНТА</span><button class="icon-button close-drawer" id="closeDrawer" aria-label="Закрыть карточку"><span data-icon="close"></span></button></div><div id="drawerContent"></div></aside>
+
+  <dialog class="case-dialog" id="caseDialog"><form id="caseForm" method="dialog"><div class="dialog-head"><div><span class="eyebrow">НОВОЕ РАССЛЕДОВАНИЕ</span><h2>Создать карточку</h2></div><button class="icon-button" value="cancel" aria-label="Закрыть"><span data-icon="close"></span></button></div><label>Название инцидента<input name="title" required maxlength="100" placeholder="Например, необычный вход в систему"></label><div class="form-columns"><label>Критичность<select name="severity"><option>Средний</option><option>Высокий</option><option>Критический</option></select></label><label>Затронутый узел<input name="host" maxlength="40" placeholder="WS-USER-001"></label></div><label>Краткое описание<textarea name="description" rows="3" maxlength="400" placeholder="Что обнаружено и что нужно проверить"></textarea></label><div class="dialog-actions"><button class="button button-secondary" value="cancel">Отмена</button><button class="button button-primary" id="submitCase" value="default">Создать расследование</button></div></form></dialog>
+</body>
+</html>
+
